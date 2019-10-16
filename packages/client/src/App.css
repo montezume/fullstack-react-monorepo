@@ -1,0 +1,26 @@
+ul {
+  padding: 0;
+}
+
+.App {
+  max-width: 400px;
+  margin: 0 auto;
+  padding-top: 2rem;
+}
+
+.new-input {
+  display: flex;
+  width: 100%;
+  padding: 4px 8px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.new-form {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}

@@ -1,0 +1,18 @@
+{
+  "name": "favorite-books",
+  "private": true,
+  "scripts": {
+    "build:client": "yarn --cwd packages/client build",
+    "start:client": "yarn --cwd packages/client start",
+    "start:server": "yarn --cwd packages/server start",
+    "start": "concurrently \"yarn start:client\" \"yarn start:server --port 3001\"",
+    "test:client": "yarn --cwd packages/client test"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^5.0.0"
+  }
+}

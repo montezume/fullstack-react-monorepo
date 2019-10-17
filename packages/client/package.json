@@ -27,5 +27,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^6.8.1",
+    "@testing-library/jest-dom": "^4.1.2",
+    "@testing-library/react": "^9.3.0",
+    "jest-fetch-mock": "^2.1.2"
+  },
+  "license": "MIT"
 }

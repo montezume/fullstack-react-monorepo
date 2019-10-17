@@ -35,6 +35,8 @@ const Book = props => {
       }}
     >
       <input
+        aria-label="Enter new book title"
+        data-testid="edit-input"
         value={value}
         className="item-input"
         onChange={event => setValue(event.target.value)}

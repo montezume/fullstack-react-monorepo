@@ -61,6 +61,7 @@ function App() {
   };
 
   const handleDelete = id => {
+    console.log("here?");
     fetch(`http://localhost:3001/books/${id}`, {
       method: "DELETE"
     })
@@ -87,6 +88,7 @@ function App() {
 
       <form onSubmit={handleSubmit} className="new-form">
         <input
+          data-testid="input"
           className="new-input"
           value={value}
           onChange={event => setValue(event.target.value)}

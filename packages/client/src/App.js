@@ -1,21 +1,35 @@
 import React from "react";
 import Book from "./components/book";
-import Search from "./components/search";
-
+import useDebounce from "./useDebounce";
 import "./App.css";
+
+const sleep = (ms = 500) => {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+};
 
 function App() {
   const [searchTerm, setSearchTerm] = React.useState("");
+  const debouncedValue = useDebounce(searchTerm, 500);
+
+  const [isLoading, setIsLoading] = React.useState(false);
   const [books, setBooks] = React.useState([]);
   const [value, setValue] = React.useState("");
 
   React.useEffect(() => {
-    fetch(`http://localhost:3001/books?q=${searchTerm}`)
-      .then(res => res.json())
-      .then(result => {
-        setBooks(result);
-      });
-  }, [searchTerm]);
+    const fetchBooks = async searchTerm => {
+      setIsLoading(true);
+      const result = await fetch(
+        `http://localhost:3001/books?q=${debouncedValue}`
+      );
+      const json = await result.json();
+      await sleep(800);
+      setBooks(json);
+      setIsLoading(false);
+    };
+    fetchBooks(debouncedValue);
+  }, [debouncedValue]);
 
   const handleEdit = (id, newValue) => {
     const data = {
@@ -63,7 +77,6 @@ function App() {
   };
 
   const handleDelete = id => {
-    console.log("here?");
     fetch(`http://localhost:3001/books/${id}`, {
       method: "DELETE"
     })
@@ -77,44 +90,51 @@ function App() {
     <div className="App">
       <h1>Favorite Books</h1>
       <p>Keep track of your favorites!</p>
-      <form>
-        <div>
+      <div>
+        <div className="field">
           <label htmlFor="search">Search for a book</label>
         </div>
-        <div>
-          <Search
+        <div className="field">
+          <input
             value={searchTerm}
             onChange={event => setSearchTerm(event.target.value)}
             id="search"
           />
         </div>
-      </form>
-      <ul>
-        {books.map(book => (
-          <Book
-            key={book.id}
-            value={book.name}
-            handleEdit={newValue => handleEdit(book.id, newValue)}
-            handleDelete={() => handleDelete(book.id)}
-          />
-        ))}
-      </ul>
+      </div>
+      {isLoading && <div>Loading...</div>}
+
+      {!isLoading && (
+        <ul>
+          {books.map(book => (
+            <Book
+              key={book.id}
+              value={book.name}
+              handleEdit={newValue => handleEdit(book.id, newValue)}
+              handleDelete={() => handleDelete(book.id)}
+            />
+          ))}
+        </ul>
+      )}
 
       <form onSubmit={handleSubmit} className="new-form">
-        <div>
-          <label htmlFor="createBook">Add a book</label>
+        <div className="field">
+          <label htmlFor="create-input">Add a book</label>
         </div>
         <input
           data-testid="input"
-          id="create-book"
+          id="create-input"
+          name="create-book"
           className="new-input"
           value={value}
           onChange={event => setValue(event.target.value)}
           placeholder="eg. The Great Gatsby"
         />
-        <button className="button primary-button" type="submit">
-          Submit
-        </button>
+        <div className="field align-right">
+          <button className="button primary-button" type="submit">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

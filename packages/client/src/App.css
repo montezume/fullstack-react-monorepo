@@ -8,7 +8,7 @@ ul {
   padding-top: 2rem;
 }
 
-.new-input {
+input {
   display: flex;
   width: 100%;
   padding: 4px 8px;
@@ -19,7 +19,12 @@ ul {
   font-size: 1rem;
 }
 
-.new-form {
+.field {
+  width: 100%;
+  margin: 8px 0;
+}
+
+.field.align-right {
   display: flex;
   align-items: flex-end;
   flex-direction: column;

@@ -1,19 +1,21 @@
 import React from "react";
 import Book from "./components/book";
+import Search from "./components/search";
 
 import "./App.css";
 
 function App() {
+  const [searchTerm, setSearchTerm] = React.useState("");
   const [books, setBooks] = React.useState([]);
   const [value, setValue] = React.useState("");
 
   React.useEffect(() => {
-    fetch("http://localhost:3001/books")
+    fetch(`http://localhost:3001/books?q=${searchTerm}`)
       .then(res => res.json())
       .then(result => {
         setBooks(result);
       });
-  }, []);
+  }, [searchTerm]);
 
   const handleEdit = (id, newValue) => {
     const data = {
@@ -75,6 +77,18 @@ function App() {
     <div className="App">
       <h1>Favorite Books</h1>
       <p>Keep track of your favorites!</p>
+      <form>
+        <div>
+          <label htmlFor="search">Search for a book</label>
+        </div>
+        <div>
+          <Search
+            value={searchTerm}
+            onChange={event => setSearchTerm(event.target.value)}
+            id="search"
+          />
+        </div>
+      </form>
       <ul>
         {books.map(book => (
           <Book
@@ -87,8 +101,12 @@ function App() {
       </ul>
 
       <form onSubmit={handleSubmit} className="new-form">
+        <div>
+          <label htmlFor="createBook">Add a book</label>
+        </div>
         <input
           data-testid="input"
+          id="create-book"
           className="new-input"
           value={value}
           onChange={event => setValue(event.target.value)}
